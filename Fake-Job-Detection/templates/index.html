@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fake Job Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>AI-Based Fake Internship & Job Detection System</h2>
+
+    <form method="POST">
+        <label>Paste Job / Internship Description:</label>
+
+        <textarea id="job_text" name="job_text" required>{{ job_text }}</textarea>
+
+        <div class="char-count" id="charCount">
+            {{ job_text|length if job_text else 0 }} characters
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="submit-btn">Check Authenticity</button>
+            <button type="button" class="reset-btn" onclick="resetPage()">Reset</button>
+        </div>
+    </form>
+
+    {% if prediction %}
+        <div class="result {% if 'Fake' in prediction %}fake{% else %}real{% endif %}" id="resultBox">
+            Result: {{ prediction }}
+        </div>
+
+        <div class="confidence-box">
+            <div class="confidence-text">
+                Confidence: {{ confidence }}%
+            </div>
+
+            <div class="confidence-bar">
+                <div
+                    class="confidence-fill {% if 'Fake' in prediction %}fake-bar{% else %}real-bar{% endif %}"
+                    id="confidenceFill"
+                    data-confidence="{{ confidence }}">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
